@@ -51,22 +51,22 @@
         "4. Administrar lista de pasajeros\n".
         "5. Imprimir viaje\n".        
         "9. Para salir\n".
-        "Seleccione una opcion\n";
+        "Seleccione una opcion ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoDos(){
-        echo "[CAMBIAR CODIGO] Ingrese nuevo codigo\n";
+        echo "[CAMBIAR CODIGO] Ingrese nuevo codigo ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoTres(){
-        echo "[CAMBIAR DESTINO] Ingrese nuevo destino\n";
+        echo "[CAMBIAR DESTINO] Ingrese nuevo destino ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoCuatro(){
-        echo "[CAMBIAR CANTIDAD MAXIMA DE PASAJEROS] Ingrese nueva cantidad\n";
+        echo "[CAMBIAR CANTIDAD MAXIMA DE PASAJEROS] Ingrese nueva cantidad ";
         return trim(fgets(STDIN));
     }
 
@@ -77,14 +77,14 @@
         "3. Modificar datos de un Pasajeros\n".
         "4. Eliminar pasajero\n".
         "9. Volver menu principal\n".
-        "Seleccione una opcion\n";
+        "Seleccione una opcion ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoSeis($v){
         echo "-------------------------------------------------------------\n".
          $v->textoListaPasajeros().
-        "Ingrese el numero del pasajero\n";
+        "Ingrese el numero del pasajero ";
         return trim(fgets(STDIN)) - 1; // -1 Para la posicion del arreglo
     }
 
@@ -93,22 +93,22 @@
         "1. Cambiar nombre del pasajero\n".
         "2. Cambiar apellido del pasajero\n".
         "3. Cambiar dni del pasajero\n".
-        "Seleccione una opcion\n";
+        "Seleccione una opcion ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoOcho(){
-        echo "[CAMBIAR NOMBRE] Ingrese nuevo nombre\n";
+        echo "[CAMBIAR NOMBRE] Ingrese nuevo nombre ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoNueve(){
-        echo "[CAMBIAR APELLIDO] Ingrese nuevo apellido\n";
+        echo "[CAMBIAR APELLIDO] Ingrese nuevo apellido ";
         return trim(fgets(STDIN));
     }
 
     function menuTextoDiez(){
-        echo "[CAMBIAR DNI] Ingrese nuevo dni\n";
+        echo "[CAMBIAR DNI] Ingrese nuevo dni ";
         return trim(fgets(STDIN));
     }
 
