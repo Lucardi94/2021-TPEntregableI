@@ -1,42 +1,4 @@
 <?php
-/**
- * La empresa de Transporte de Pasajeros “Viaje Feliz” quiere registrar la información referente a sus viajes.
- * 
- * De cada viaje se precisa almacenar 
- *      código
- *      destino
- *      cantidad máxima de pasajeros
- *      pasajeros del viaje
- * 
- * Realice la implementación de la clase Viaje e implemente los métodos necesarios para modificar los atributos de dicha clase (incluso los datos de los pasajeros). 
- * Utilice un array que almacene la información correspondiente a los pasajeros. 
- * 
- * Cada pasajero es un array asociativo con las claves 
- *      “nombre”
- *      “apellido”
- *      “numero de documento”
- * 
- * Modificar la clase Viaje para que ahora los pasajeros sean un objeto que tenga los atributos
- *      nombre
- *      apellido
- *      numero de documento
- *      teléfono
- * 
- * El viaje ahora contiene una referencia a una colección de objetos de la clase Pasajero.
- * 
- * También se desea guardar la información de la persona responsable de realizar el viaje, para ello cree una clase ResponsableV que registre el 
- *      número de empleado
- *      número de licencia
- *      nombre
- *      apellido
- * 
- * La clase Viaje debe hacer referencia al responsable de realizar el viaje.
- * Volver a implementar las operaciones que permiten modificar el nombre, apellido y teléfono de un pasajero.
- * Luego implementar la operación que agrega los pasajeros al viaje, solicitando por consola la información de los mismos.
- * Se debe verificar que el pasajero no este cargado mas de una vez en el viaje. 
- * De la misma forma cargue la información del responsable del viaje.
- * Nota: Recuerden que deben enviar el link a la resolución en su repositorio en GitHub.
- */
     class viaje{
 
         // ATRIBUTOS
@@ -100,7 +62,6 @@
         public function textoListaPasajeros(){
             /* Retorna un string con los datos de la matrice listaPasajero, en caso que no este vacio */
             $txt = "SIN PASAJEROS\n";
-
             if (count($this->getListaPasajero())>0){
                 $txt = "Pasajeros:\n";
                 foreach ($this->getListaPasajero() as $indice => $pasajero){
@@ -112,9 +73,8 @@
         }
 
         /**
-         * FUNCIONES PROPIAS
+         * MODIFICADORES PROPIOS
          */
-
         public function cambiarCodigo($nCod){
             if ($this->getCodigo() != $nCod){   // Verifica que sea otro codigo 
                 $this->setCodigo($nCod);
@@ -141,8 +101,8 @@
         /**
          * FUNCIONES DE LA LISTA PASAJEROS
          */
-
         public function agregarPasajero($nPasajero){
+            /*Ingresa un nuevo pasajero a la lista de pasajeros*/
             $lista = $this->getListaPasajero();
             if (!$this->existeNroDocumentoPasajero($nPasajero->getNroDocumento())){ // verifica que no existan dos personas con ese dni
                 if (count($lista) < $this->getCantidadMaxima()){ // verifica que el viaje tenga capacidad para uno mas                           
@@ -154,10 +114,10 @@
         }
 
         public function borrarPasajero($i){
-            /* Setea la lista con la mosificacion deseada */
+            /* Borra un objeto en el arreglo en la posiscion de $i*/
             $lista = $this->getListaPasajero();
-            if (count($lista) > 0){ 
-                if (count($lista) > $i){
+            if (count($lista) > 0){ // Verifica que la lista no este vacia
+                if (count($lista) > $i){ // Verifica que $i pueda ser un nuemero del arreglo
                     array_splice($lista,$i,1);
                     $this->setListaPasajero($lista);
                     return "Operacion Exitosa!";
@@ -165,35 +125,34 @@
             } else return "Operacion Fallida! Lista vacia";
         }
 
+        /**
+         * MODIFICADORES UN PASAJERO
+         */
         public function cambiarNombrePasajero($nNom, $i){
-            /* Setea la lista con la mosificacion deseada */
             $lista = $this->getListaPasajero();
-            if ($lista[$i]->getNombre()!= $nNom){
+            if ($lista[$i]->getNombre()!= $nNom){ // Verifica que sea otro nombre 
                 $lista[$i]->setNombre($nNom);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo nombre";
         }
 
         public function cambiarApellidoPasajero($nApe, $i){
-            /* Setea la lista con la mosificacion deseada */
             $lista = $this->getListaPasajero();
-            if ($lista[$i]->getApellido()!= $nApe){
+            if ($lista[$i]->getApellido()!= $nApe){ // Verifica que sea otro apellido
                 $lista[$i]->setApellido($nApe);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo apellido";
         }
 
         public function cambiarNroDocumentoPasajero($nDni, $i){
-            /* Setea la lista con la mosificacion deseada */
             $lista = $this->getListaPasajero();
-            if (!$this->existeNroDocumentoPasajero($nDni)){
+            if (!$this->existeNroDocumentoPasajero($nDni)){ // Verifica que sea otro numero de documento
                 $lista[$i]->setNroDocumento($nDni);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! ya existe documento";
         }
 
         public function cambiarTelefonoPasajero($nTel, $i){
-            /* Setea la lista con la mosificacion deseada */
             $lista = $this->getListaPasajero();
             if ($lista[$i]->getTelefono() != $nTel){ // Verifica que sea otro telefono
                 $lista[$i]->setTelefono($nTel);
@@ -213,36 +172,31 @@
         }
 
         /**
-         * FUNCIONES DEL RESPONSABLE DEL VIAJE
+         * MODIFICADORES DEL RESPONSABLE DEL VIAJE
          */
-
         public function cambiarNombreResponsable($nNom){
-            /* Setea la lista con la mosificacion deseada */
-            if ($this->getObjResponsable()->getNombre()!= $nNom){
+            if ($this->getObjResponsable()->getNombre()!= $nNom){ // Verifica que no sea el mismo nombre
                 $this->getObjResponsable()->setNombre($nNom);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo nombre";
         }
 
         public function cambiarApellidoResponsable($nApe){
-            /* Setea la lista con la mosificacion deseada */
-            if ($this->getObjResponsable()->getApellido()!= $nApe){
+            if ($this->getObjResponsable()->getApellido()!= $nApe){ // Verifica que no sea el mismo apellido
                 $this->getObjResponsable()->setApellido($nApe);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo apellido";
         }
 
         public function cambiarNroLicenciaResponsable($nNLic){
-            /* Setea la lista con la mosificacion deseada */
-            if ($this->getObjResponsable()->getNroLicencia() != $nNLic){
+            if ($this->getObjResponsable()->getNroLicencia() != $nNLic){ // Verifica que no sea el mismo numero de licencia
                 $this->getObjResponsable()->setNroLicencia($nNLic);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo numero de licencia";
         }
 
         public function cambiarNroEmpleadoResponsable($nNEmp){
-            /* Setea la lista con la mosificacion deseada */
-            if ($this->getObjResponsable()->getNroEmpleado() != $nNEmp){
+            if ($this->getObjResponsable()->getNroEmpleado() != $nNEmp){ // Verifica que no sea el mismo numero de empleado
                 $this->getObjResponsable()->setNroEmpleado($nNEmp);
                 return "Operacion Exitosa!";
             } else return "Operacion Fallida! mismo numero de empleado";
