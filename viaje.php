@@ -90,11 +90,11 @@
 
         // METODO toString()
         public function __toString(){
-            return "Codigo: ".$this->getCodigo().
-            "\nDestino: ".$this->getDestino().
-            "\nCantidad de Personas: ".$this->getCantidadMaxima().
-            "\nResponsable: ".$this->getObjResponsable().
-            "\nPasajeros:\n".$this->textoListaPasajeros();
+            return "Codigo: ".$this->getCodigo()."\n".
+            "Destino: ".$this->getDestino()."\n".
+            "Cantidad de Personas: ".$this->getCantidadMaxima()."\n".
+            "Responsable: ".$this->getObjResponsable()."\n".
+            $this->textoListaPasajeros();
         }
 
         public function textoListaPasajeros(){
@@ -105,8 +105,7 @@
                 $txt = "Pasajeros:\n";
                 foreach ($this->getListaPasajero() as $indice => $pasajero){
                     $numero = $indice + 1;
-                    $txt = $txt.$numero." - ".$pasajero."\n";
-                    //ejemplo: 1 - Alveal, Julio - 39333999
+                    $txt = $txt."     ".$numero." - ".$pasajero."\n"; //ejemplo:     1 - Alveal, Julio - 39333999
                 }
             }            
             return $txt;
@@ -158,7 +157,7 @@
             /* Setea la lista con la mosificacion deseada */
             $lista = $this->getListaPasajero();
             if (count($lista) > 0){ 
-                if (!is_null($lista[$i])){
+                if (count($lista) > $i){
                     array_splice($lista,$i,1);
                     $this->setListaPasajero($lista);
                     return "Operacion Exitosa!";

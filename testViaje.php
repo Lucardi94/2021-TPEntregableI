@@ -349,26 +349,20 @@
                                 break;
                                 default: echo "Valor no valido\n";
                             }
-                        break;
-                        
+                        break;                        
                         //OPCION 5.9 Volver menu principal
                         case 9: //sin accion
                         break;
-
                         default: echo "Valor no valido\n";
                     }
                 } while ($respuesta2 != 9);
             break;
-
             //OPCION 5 Imprimir viaje
-            case 6: 
-                echo $viaje;
+            case 6: echo $viaje;
             break;
-
             //OPCION 9 Salir
             case 9: echo "Good bye";
             break;
-
             default: echo "Valor no valido\n";
         }
      } while ($respuesta != 9);

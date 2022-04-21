@@ -82,8 +82,8 @@
 
         // METODO toString()
         public function __toString(){
-            return "\n     ".$this->getNombre()." ".$this->getApellido().
-            "\n     N° EMPLEADO: ".$this->getNroEmpleado().
-            "\n     N° LICENCIA: ".$this->getNroLicencia();
+            return $this->getNombre()." ".$this->getApellido()."\n".
+            "N° EMPLEADO: ".$this->getNroEmpleado()."\n".
+            "N° LICENCIA: ".$this->getNroLicencia();
         }
     }
