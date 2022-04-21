@@ -20,6 +20,8 @@
  *      “apellido”
  *      “numero de documento”
  * 
+ * ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ * 
  * Modificar la clase Viaje para que ahora los pasajeros sean un objeto que tenga los atributos
  *      nombre
  *      apellido
@@ -48,14 +50,14 @@
          * Retorna una instancia de la clase viaje.
          * Con la lista pasajero vacia.
          */
-        echo "Ingrese codigo del viaje ";
+        echo "INGRESE DATOS DEL VIAJE\n";
+        echo "CODIGO ";
         $cod = trim(fgets(STDIN));
-        echo "Ingrese destino del viaje ";
+        echo "DESTINO ";
         $des = trim(fgets(STDIN));
-        echo "Ingrese cantidad maxima de pasajeros ";
+        echo "CAPACIDAD DEL VIAJE ";
         $canMax = trim(fgets(STDIN));        
         $objRes = ingresoResponsable();
-
         return new viaje($cod,$des,$canMax,array (),$objRes);
     }
 
@@ -73,10 +75,8 @@
         $nLic = trim(fgets(STDIN));
         echo "N°EMPLEADO  ";
         $nEmp = trim(fgets(STDIN));
-
         return new responsable($nom,$ape,$nLic,$nEmp);
     }
-
 
     function ingresoPasajero(){
         /**
@@ -93,16 +93,14 @@
         $dni = trim(fgets(STDIN));
         echo "TEL ";
         $tel = trim(fgets(STDIN));
-
         return new pasajero($nom,$ape,$dni,$tel);
     }
     
     /**
-     * Textos de menus, retorna la opcion seleccionada
+     * Textos del menu principal, retorna la opcion seleccionada por consola
      */
-
     function menuTexto(){
-        echo "\n-------------------------------------------------------------\n".
+        echo "-------------------------------------------------------------\n".
         "1. Cambiar codigo del viaje\n".
         "2. Cambiar destino del viaje\n".
         "3. Cambiar cantidad Maxima de Pasajeros\n".
@@ -113,6 +111,63 @@
         "Seleccione una opcion ";
         return trim(fgets(STDIN));
     }
+
+    /**
+     * Textos del menu administrar lista de pasajeros, retorna la opcion seleccionada por consola
+     */
+    function menuTextoCuatro(){
+        echo "-------------------------------------------------------------\n".
+        "1. Imprimir lista de pasajeros\n".
+        "2. Cargar un nuevo pasajero\n".
+        "3. Modificar datos de un Pasajeros\n".
+        "4. Eliminar pasajero\n".
+        "9. Volver menu principal\n".
+        "Seleccione una opcion ";
+        return trim(fgets(STDIN));
+    }
+
+    /**
+     * Textos del menu administrar responsable del viaje, retorna la opcion seleccionada por consola
+     */
+    function menuTextoCinco(){
+        echo "-------------------------------------------------------------\n".
+        "1. Imprimir datos del responsable\n".
+        "2. Modificar datos del responsable\n".
+        "9. Volver menu principal\n".
+        "Seleccione una opcion ";
+        return trim(fgets(STDIN));
+    }
+
+    /**
+     * Menu modificacion de un pasajero del viaje
+     */    
+    function menuTextoCuatroTres(){
+        echo "-------------------------------------------------------------\n".
+        "1. Cambiar nombre del pasajero\n".
+        "2. Cambiar apellido del pasajero\n".
+        "3. Cambiar dni del pasajero\n".
+        "4. Cambiar telefono del pasajero\n".
+        "Seleccione una opcion ";
+        return trim(fgets(STDIN));
+    }
+    
+    /**
+     * Menu modificacion de responsable del viaje
+     */
+    function menuTextoCincoDos(){
+        echo "-------------------------------------------------------------\n".
+        "1. Cambiar nombre del responsable\n".
+        "2. Cambiar apellido del responsable\n".
+        "3. Cambiar numero de empleado del responsable\n".
+        "4. Cambiar numero de liciencia del responsable\n".
+        "Seleccione una opcion ";
+        return trim(fgets(STDIN));
+    }
+
+    /**
+     * Menu's de ingreso de datos para modificaciones del viaje
+     * retorna datos ingresados por consola
+     */
 
     function menuTextoUno(){
         echo "[CAMBIAR CODIGO] Ingrese nuevo codigo ";
@@ -129,42 +184,10 @@
         return trim(fgets(STDIN));
     }
 
-    function menuTextoCuatro(){
-        echo "-------------------------------------------------------------\n".
-        "1. Imprimir lista de pasajeros\n".
-        "2. Cargar un nuevo pasajero\n".
-        "3. Modificar datos de un Pasajeros\n".
-        "4. Eliminar pasajero\n".
-        "9. Volver menu principal\n".
-        "Seleccione una opcion ";
-        return trim(fgets(STDIN));
-    }
-
-    function menuTextoCinco(){
-        echo "-------------------------------------------------------------\n".
-        "1. Imprimir datos del responsable\n".
-        "2. Modificar datos del responsable\n".
-        "9. Volver menu principal\n".
-        "Seleccione una opcion ";
-        return trim(fgets(STDIN));
-    }
-
-    function menuSeleccionarPasajero($v){
-        echo "-------------------------------------------------------------\n".
-         $v->textoListaPasajeros().
-        "Ingrese el numero del pasajero ";
-        return trim(fgets(STDIN)) - 1; // -1 Para la posicion del arreglo
-    }
-
-    function menuTextoCuatroTres(){
-        echo "-------------------------------------------------------------\n".
-        "1. Cambiar nombre del pasajero\n".
-        "2. Cambiar apellido del pasajero\n".
-        "3. Cambiar dni del pasajero\n".
-        "4. Cambiar telefono del pasajero\n".
-        "Seleccione una opcion ";
-        return trim(fgets(STDIN));
-    }
+    /**
+     * Menus de ingreso de datos para modificaciones de un pasajero del viaje
+     * retorna datos ingresados por consola
+     */
 
     function menuTextoCuatroTresUno(){
         echo "[CAMBIAR NOMBRE] Ingrese nuevo nombre ";
@@ -185,16 +208,10 @@
         return trim(fgets(STDIN));
     }
 
-    function menuTextoCincoDos(){
-        echo "-------------------------------------------------------------\n".
-        "1. Cambiar nombre del responsable\n".
-        "2. Cambiar apellido del responsable\n".
-        "3. Cambiar numero de empleado del responsable\n".
-        "4. Cambiar numero de liciencia del responsable\n".
-        "Seleccione una opcion ";
-        return trim(fgets(STDIN));
-    }
-
+    /**
+     * Menu's de ingreso de datos para modificaciones del responsable del viaje
+     * Retornan datos ingresados por consola
+     */
     function menuTextoCincoDosUno(){
         echo "[CAMBIAR NOMBRE] Ingrese nuevo nombre ";
         return trim(fgets(STDIN));
@@ -209,148 +226,128 @@
         echo "[CAMBIAR N°EMPLEADO] Ingrese nuevo numero de empleado ";
         return trim(fgets(STDIN));
     }
+
     function menuTextoCincoDosCuatro(){
         echo "[CAMBIAR N°LICENCIA] Ingrese nuevo numero de licencia ";
         return trim(fgets(STDIN));
     }
 
+    function menuSeleccionarPasajero($v){
+        echo "-------------------------------------------------------------\n".
+         $v->textoListaPasajeros().
+        "Ingrese el numero del pasajero ";
+        return trim(fgets(STDIN)) - 1; // -1 Para la posicion del arreglo
+    }
+    
     /**
      * PROGRAMA PRINCIPAL
      */
-
     $viaje = ingresoViaje();
     echo "-------------------------------------------------------------\n".
-    "Bienvenido La empresa de Transporte de Pasajeros Viaje Feliz";
+    "Bienvenido La empresa de Transporte de Pasajeros Viaje Feliz\n";
 
     do { //menu interactivo
-
         $respuesta = menuTexto();
         switch ($respuesta){
-
             //OPCION 1 Cambiar codigo del viaje           
             case 1:
                 $nuevoCodigo = menuTextoUno();
                 echo $viaje->cambiarCodigo($nuevoCodigo);
             break;
-
             //OPCION 2 Cambiar destino del viaje
             case 2:
                 $nuevoDestino = menuTextoDos();
                 echo $viaje->cambiarDestino($nuevoDestino);
             break;
-
             //OPCION 3 Cambiar cantidad Maxima de Pasajeros
             case 3:
                 $nuevaCantidad = menuTextoTres();
                 echo $viaje->cambiarCantidadMaxima($nuevaCantidad);
             break;
-
             //OPCION 4 Administrar lista de pasajeros
             case 4:
                 do{
                     $respuesta2 = menuTextoCuatro();            
                     switch ($respuesta2){
-
                         //OPCION 4.1 Imprimir lista de pasajeros             
-                        case 1:
-                            echo $viaje->textoListaPasajeros();
+                        case 1: echo $viaje->textoListaPasajeros();
                         break;
-
                         //OPCION 4.2 Cargar un nuevo pasajero
-                        case 2:
-                            echo $viaje->agregarPasajero(ingresoPasajero())."\n";
+                        case 2: echo $viaje->agregarPasajero(ingresoPasajero())."\n";
                         break;
-
                         //OPCION 4.3 Modificar datos de un Pasajeros
                         case 3:
                             $indice = menuSeleccionarPasajero($viaje);
                             $respuesta3 = menuTextoCuatroTres();
-                            switch ($respuesta3){
-                                
+                            switch ($respuesta3){                                
                                 //OPCION 4.3.1 Cambiar nombre del pasajero
                                 case 1:
                                     $nuevoNombre = menuTextoCuatroTresUno();
                                     echo $viaje->cambiarNombrePasajero($nuevoNombre,$indice)."\n";
-                                break;
-                                
+                                break;                                
                                 //OPCION 4.3.2 Cambiar apellido del pasajero
                                 case 2:
                                     $nuevoApellido = menuTextoCuatroTresDos();
                                     echo $viaje->cambiarApellidoPasajero($nuevoApellido,$indice)."\n";
-                                break;
-                                
+                                break;                                
                                 //OPCION 4.3.3 Cambiar dni del pasajero
                                 case 3:
                                     $nuevoDni = menuTextoCuatroTresTres();
                                     echo $viaje->cambiarNroDocumentoPasajero($nuevoDni,$indice)."\n";
                                 break;
-
                                 //OPCION 4.3.4 Cambiar telefono del pasajero
                                 case 4:
                                     $nuevoTelefono = menuTextoCuatroTresCuatro();
                                     echo $viaje->cambiarTelefonoPasajero($nuevoTelefono,$indice)."\n";
                                 break;
-
                                 default: echo "Valor no valido\n";
                             }
-                        break;
-                        
+                        break;                        
                         //OPCION 4.4 Eliminar pasajero
                         case 4:
                             $indice = menuSeleccionarPasajero($viaje);
                             echo $viaje->borrarPasajero($indice)."\n";
-                        break;
-                        
+                        break;                        
                         //OPCION 4.5 Volver menu principal
                         case 9: //sin accion
                         break;
-
                         default: echo "Valor no valido\n";
                     }
                 } while ($respuesta2 != 9);
             break;
-
             //OPCION 5 Administrar responsable
             case 5:
                 do{
                     $respuesta2 = menuTextoCinco();            
                     switch ($respuesta2){
-
                         //OPCION 5.1 Imprimir datos del responsable             
-                        case 1:
-                            echo "Responsable: ".$viaje->getObjResponsable()."\n";
+                        case 1: echo "Responsable: ".$viaje->getObjResponsable()."\n";
                         break;
-
                         //OPCION 5.2 Modificar datos del responsable
                         case 2:
                             $respuesta3 = menuTextoCincoDos();
-                            switch ($respuesta3){                                
+                            switch (menuTextoCincoDos()){                                
                                 //OPCION 5.2.1 Cambiar nombre del responsable
                                 case 1:
                                     $nuevoNombre = menuTextoCincoDosUno();
                                     echo $viaje->cambiarNombreResponsable($nuevoNombre)."\n";
-                                break;
-                                
+                                break;                                
                                 //OPCION 5.2.2 Cambiar apellido del responsable
                                 case 2:
                                     $nuevoApellido = menuTextoCincoDosDos();
                                     echo $viaje->cambiarApellidoResponsable($nuevoApellido)."\n";
-                                break;
-                                
+                                break;                                
                                 //OPCION 5.2.3 Cambiar numero de empleado del responsable
                                 case 3:
                                     $nuevoNroEmpleado = menuTextoCincoDosTres();
                                     echo $viaje->cambiarNroEmpleadoResponsable($nuevoNroEmpleado)."\n";
                                 break;
-
                                 //OPCION 5.2.4 Cambiar numero de liciencia del responsable
                                 case 4:
                                     $nuevoNroLicencia = menuTextoCincoDosCuatro();
                                     echo $viaje->cambiarNroLicenciaResponsable($nuevoNroLicencia)."\n";
                                 break;
-
                                 default: echo "Valor no valido\n";
-
                             }
                         break;
                         
