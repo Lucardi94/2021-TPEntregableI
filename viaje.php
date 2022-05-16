@@ -7,14 +7,18 @@
         private $cantidadMaxima;
         private $listaPasajero;
         private $objResponsable;
+        private $importe;
+        private $idaVuelta;
 
         // METODO CONSTRUCTOR
-        public function __construct($cod, $des, $canMax, $lisPas, $objRes){
+        public function __construct($cod, $des, $canMax, $lisPas, $objRes, $imp, $idaVue){
             $this->codigo = $cod;
             $this->destino = $des;
             $this->cantidadMaxima = $canMax;
             $this->listaPasajero = $lisPas;
             $this->objResponsable = $objRes;
+            $this->importe = $imp;
+            $this->idaVuelta = $idaVue;
         }
 
         // METODOS DE ACCESO
@@ -33,6 +37,12 @@
         public function getObjResponsable(){
             return $this->objResponsable;
         }
+        public function getImporte(){
+            return $this->importe;
+        }
+        public function getIdaVuelta(){
+            return $this->idaVuelta;
+        }
 
         public function setCodigo($nCod){
             $this->codigo = $nCod;
@@ -49,6 +59,12 @@
         public function setObjResponsable($nObjRes){
             $this->objResponsable = $nObjRes;
         }
+        public function setImporte($nImp){
+            $this->importe = $nImp;
+        }
+        public function setIdaVuelta($nIdaVue){
+            $this->idaVuelta = $nIdaVue;
+        }
 
         // METODO toString()
         public function __toString(){
@@ -56,7 +72,18 @@
             "Destino: ".$this->getDestino()."\n".
             "Cantidad de Personas: ".$this->getCantidadMaxima()."\n".
             "Responsable: ".$this->getObjResponsable()."\n".
+            "Importe: ".$this->getImporte()."$\n".
+            "Ida y Vuelta: ".$this->textoIdaVuelta()."\n".
             $this->textoListaPasajeros();
+        }
+
+        public function textoIdaVuelta(){
+            /* Retorna un string con un si o no */
+            $txt = "NO";
+            if ($this->getIdaVuelta()){
+                $txt = "SI";
+            }            
+            return $txt;
         }
 
         public function textoListaPasajeros(){
@@ -101,16 +128,29 @@
         /**
          * FUNCIONES DE LA LISTA PASAJEROS
          */
-        public function agregarPasajero($nPasajero){
-            /*Ingresa un nuevo pasajero a la lista de pasajeros*/
+        
+        public function venderPasaje($nPasajero){
+            /**
+             * Retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros.
+             * falso caso contrario.
+             */
             $lista = $this->getListaPasajero();
-            if (!$this->existeNroDocumentoPasajero($nPasajero->getNroDocumento())){ // verifica que no existan dos personas con ese dni
-                if (count($lista) < $this->getCantidadMaxima()){ // verifica que el viaje tenga capacidad para uno mas                           
-                    array_push($lista, $nPasajero);
-                    $this->setListaPasajero($lista);
-                    return "Operacion Exitosa!";
-                } else return "Operacion Fallida! Viaje Completo";
-            } else return "Operacion Fallida! ya existe documento";
+            //if (!$this->existeNroDocumentoPasajero($nPasajero->getNroDocumento())){ // verifica que no existan dos personas con ese dni
+                array_push($lista, $nPasajero);
+                $this->setListaPasajero($lista);
+            //} else return "Operacion Fallida! ya existe documento";
+            //TENIA ESTE DETALLE ANTES, POR SI YA EXISTE EL MISMO PASAJERO 
+        }
+
+        public function hayPasajeroDisponible(){
+            /**
+             * Retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros.
+             * falso caso contrario.
+             */
+            $lista = $this->getListaPasajero();
+            if (count($lista) < $this->getCantidadMaxima()){ // verifica que el viaje tenga capacidad para uno mas
+                return TRUE;
+            } else return FALSE;
         }
 
         public function borrarPasajero($i){
