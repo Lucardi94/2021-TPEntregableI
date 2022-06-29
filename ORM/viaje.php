@@ -8,17 +8,31 @@
         private $listaPasajero;
         private $objResponsable;
         private $importe;
-        private $idaVuelta;
+        private $tipoAsiento;
+        private $idaVuelta;        
+        private $mensajeOperacion;
 
         // METODO CONSTRUCTOR
-        public function __construct($cod, $des, $canMax, $lisPas, $objRes, $imp, $idaVue){
-            $this->codigo = $cod;
-            $this->destino = $des;
-            $this->cantidadMaxima = $canMax;
-            $this->listaPasajero = $lisPas;
-            $this->objResponsable = $objRes;
-            $this->importe = $imp;
-            $this->idaVuelta = $idaVue;
+        public function __construct(){
+            $this->codigo = 0;
+            $this->destino = "";
+            $this->cantidadMaxima = 0;
+            $this->listaPasajero = NULL;
+            $this->objResponsable = NULL;
+            $this->importe = 0;
+            $this->tipoAsiento = NULL;
+            $this->idaVuelta = NULL;
+        }
+
+        public function cargar($viaje){
+            $this->setCodigo($viaje['idviaje']);
+            $this->setDestino($viaje['vdestino']);
+            $this->setCantidadMaxima($viaje['vcantmaxpasajeros']);
+            $this->setListaPasajero($viaje['ptelefono']);
+            $this->setObjResponsable($viaje['objviaje']);
+            $this->setImporte($viaje['objviaje']);
+            $this->setTipoAsiento($viaje['objviaje']);
+            $this->setIdaVuelta($viaje['objviaje']);
         }
 
         // METODOS DE ACCESO
@@ -40,8 +54,14 @@
         public function getImporte(){
             return $this->importe;
         }
+        public function getTipoAsiento(){
+            return $this->tipoAsiento;
+        }
         public function getIdaVuelta(){
             return $this->idaVuelta;
+        }
+        public function getMensajeOperacion(){
+            return $this->mensajeOperacion;
         }
 
         public function setCodigo($nCod){
@@ -62,8 +82,43 @@
         public function setImporte($nImp){
             $this->importe = $nImp;
         }
+        public function setTipoAsiento($nTipAsi){
+            $this->tipoAsiento = $nTipAsi;
+        }
         public function setIdaVuelta($nIdaVue){
             $this->idaVuelta = $nIdaVue;
+        }
+        public function setMensajeOperacion($nMsj){
+            $this->mensajeOperacion=$nMsj;
+        }
+
+        public function Buscar($id,$bool){
+            $base=new BaseDatos();
+            $consulta="Select * from viaje where idviaje=".$id;
+            $resp=false;
+            if($base->iniciar()){
+                if($base->ejecutar($consulta)){
+                    if($row2=$base->registro()){
+                        $coleccion=array ();
+                        if ($bool){                     
+                            $objCine=new FuncionCine();
+                            $objMusical=new FuncionMusical();
+                            $objTeatro=new FuncionTeatro();
+                            $listaTemp=array_merge($objCine->listar(), $objMusical->listar(), $objTeatro->listar());
+                            for ($i=0; $i<count($listaTemp); $i++){
+                                $funcion=$listaTemp[$i];
+                                if ($funcion->getObjTeatro()->getIdTeatro() == $id){
+                                    array_push($coleccion, $funcion);
+                                }
+                            }
+                        }                      
+                        $row2['listafuncion']=$coleccion;
+                        $this->cargar($row2);
+                        $resp=true;
+                    } else { $this->setMensajeOperacion($base->getError()); }               
+                } else { $this->setMensajeOperacion($base->getError()); }
+            } else { $this->setMensajeOperacion($base->getError()); }		
+            return $resp;
         }
 
         // METODO toString()
@@ -73,14 +128,15 @@
             "Cantidad de Personas: ".$this->getCantidadMaxima()."\n".
             "Responsable: ".$this->getObjResponsable()."\n".
             "Importe: ".$this->getImporte()."$\n".
-            "Ida y Vuelta: ".$this->textoIdaVuelta()."\n".
+            "Semicama: ".$this->textoBoolean($this->getTipoAsiento())."\n".
+            "Ida y Vuelta: ".$this->textoBoolean($this->getIdaVuelta())."\n".
             $this->textoListaPasajeros();
         }
 
-        public function textoIdaVuelta(){
+        public function textoBoolean($bool){
             /* Retorna un string con un si o no */
             $txt = "NO";
-            if ($this->getIdaVuelta()){
+            if ($bool){
                 $txt = "SI";
             }            
             return $txt;
