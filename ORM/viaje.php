@@ -1,11 +1,12 @@
 <?php
+    include_once 'empresa.php';
     class viaje{
-
         // ATRIBUTOS
         private $codigo;
         private $destino;
         private $cantidadMaxima;
         private $listaPasajero;
+        private $objEmpresa;
         private $objResponsable;
         private $importe;
         private $tipoAsiento;
@@ -18,6 +19,7 @@
             $this->destino = "";
             $this->cantidadMaxima = 0;
             $this->listaPasajero = NULL;
+            $this->objEmpresa = NULL;
             $this->objResponsable = NULL;
             $this->importe = 0;
             $this->tipoAsiento = NULL;
@@ -28,11 +30,12 @@
             $this->setCodigo($viaje['idviaje']);
             $this->setDestino($viaje['vdestino']);
             $this->setCantidadMaxima($viaje['vcantmaxpasajeros']);
-            $this->setListaPasajero($viaje['ptelefono']);
-            $this->setObjResponsable($viaje['objviaje']);
-            $this->setImporte($viaje['objviaje']);
-            $this->setTipoAsiento($viaje['objviaje']);
-            $this->setIdaVuelta($viaje['objviaje']);
+            $this->setListaPasajero($viaje['listapasajero']);
+            $this->setObjEmpresa($viaje['objempresa']);
+            $this->setObjResponsable($viaje['objresponsable']);
+            $this->setImporte($viaje['vimporte']);
+            $this->setTipoAsiento($viaje['tipoAsiento']);
+            $this->setIdaVuelta($viaje['idayvuelta']);
         }
 
         // METODOS DE ACCESO
@@ -47,6 +50,9 @@
         }
         public function getListaPasajero(){
             return $this->listaPasajero;
+        }
+        public function getObjEmpresa(){
+            return $this->objEmpresa;
         }
         public function getObjResponsable(){
             return $this->objResponsable;
@@ -76,6 +82,9 @@
         public function setListaPasajero($nLisPas){
             $this->listaPasajero = $nLisPas;
         }
+        public function setObjEmpresa($nObjEmp){
+            $this->objEmpresa = $nObjEmp;
+        }
         public function setObjResponsable($nObjRes){
             $this->objResponsable = $nObjRes;
         }
@@ -92,7 +101,7 @@
             $this->mensajeOperacion=$nMsj;
         }
 
-        public function Buscar($id,$bool){
+        public function buscar($id,$bool){
             $base=new BaseDatos();
             $consulta="Select * from viaje where idviaje=".$id;
             $resp=false;
@@ -101,19 +110,26 @@
                     if($row2=$base->registro()){
                         $coleccion=array ();
                         if ($bool){                     
-                            $objCine=new FuncionCine();
-                            $objMusical=new FuncionMusical();
-                            $objTeatro=new FuncionTeatro();
-                            $listaTemp=array_merge($objCine->listar(), $objMusical->listar(), $objTeatro->listar());
+                            $objPasajero=new pasajero();
+                            $listaTemp=$objPasajero->listar();
                             for ($i=0; $i<count($listaTemp); $i++){
-                                $funcion=$listaTemp[$i];
-                                if ($funcion->getObjTeatro()->getIdTeatro() == $id){
-                                    array_push($coleccion, $funcion);
+                                $pasajero=$listaTemp[$i];
+                                if ($pasajero->getObjViaje()->getCodigo() == $id){
+                                    array_push($coleccion, $pasajero);
                                 }
                             }
-                        }                      
-                        $row2['listafuncion']=$coleccion;
-                        $this->cargar($row2);
+                        }
+                        $this->setCodigo($row2['idviaje']);
+                        $this->setDestino($row2['vdestino']);
+                        $this->setCantidadMaxima($row2['vcantmaxpasajeros']);
+                        $this->setListaPasajero($coleccion);
+                        $objResponsable = new responsable();
+                        $this->setObjResponsable($objResponsable->buscar($row2['rnumeroempleado']));
+                        $objEmpresa = new empresa();
+                        $this->setObjEmpresa($objEmpresa->buscar($row2['idempresa'], FALSE));
+                        $this->setImporte($row2['vimporte']);
+                        $this->setTipoAsiento($row2['tipoAsiento']);
+                        $this->setIdaVuelta($row2['idayvuelta']);
                         $resp=true;
                     } else { $this->setMensajeOperacion($base->getError()); }               
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -121,11 +137,70 @@
             return $resp;
         }
 
+        public function listar($condicion=""){
+            $colEmpresa=null;
+            $base=new BaseDatos();
+            $consulta="Select * from viaje ";
+            if ($condicion!=""){
+                $consulta.=" where ".$condicion;
+            }
+            $consulta.=" order by idviaje ";
+            if($base->iniciar()){
+                if($base->ejecutar($consulta)){
+                    $colViaje=array ();
+                    while($row2=$base->registro()){
+                        $objViaje=new viaje();
+                        $objViaje->buscar($row2['idviaje'],FALSE);
+                        array_push($colViaje,$objViaje);
+                    }                
+                } else { $this->setMensajeOperacion($base->getError()); }
+            } else { $this->setMensajeOperacion($base->getError()); }	
+            return $colViaje;
+        }
+
+        public function insertar(){
+            $base=new BaseDatos();
+            $resp=false;
+            $consulta="INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte, tipoAsiento, idayvuelta) VALUES ('".$this->getDestino()."',".$this->getCantidadMaxima().",".$this->getObjEmpresa()->getNroEmpresa().",".$this->getObjResponsable()->getNroEmpleado().",".$this->getImporte().",".$this->getTipoAsiento().",".$this->getIdaVuelta().")";            
+            if($base->iniciar()){    
+                if($id=$base->devuelveIDInsercion($consulta)){
+                    $this->setCodigo($id);
+                    $resp=true;    
+                } else { $this->setMensajeOperacion($base->getError()); }    
+            } else { $this->setMensajeOperacion($base->getError()); }
+            return $resp;
+        }
+
+        public function modificar(){
+            $resp=false; 
+            $base=new BaseDatos();
+            $consulta="UPDATE viaje SET vcantmaxpasajeros=".$this->getCantidadMaxima().",idempresa=".$this->getObjEmpresa()->getNroEmpresa().",rnumeroempleado=".$this->getObjResponsable()->getNroEmpleado().",vimporte=".$this->getImporte().",tipoAsiento=".$this->getTipoAsiento().", idayvuelta=".$this->getIdaVuelta()." WHERE idviaje=".$this->getCodigo();
+            if($base->iniciar()){
+                if($base->ejecutar($consulta)){
+                    $resp=true;
+                } else{ $this->setMensajeOperacion($base->getError()); }
+            } else{ $this->setMensajeOperacion($base->getError()); }
+            return $resp;
+        }
+
+        public function eliminar(){
+            $base=new BaseDatos();
+            $resp=false;
+            if($base->iniciar()){
+                $consulta="DELETE FROM viaje WHERE idviaje=".$this->getCodigo();
+                if($base->ejecutar($consulta)){
+                    $resp=true;
+                }else{ $this->setMensajeOperacion($base->getError()); }
+            }else{ $this->setMensajeOperacion($base->getError()); }
+            return $resp; 
+        }
+
         // METODO toString()
         public function __toString(){
             return "Codigo: ".$this->getCodigo()."\n".
             "Destino: ".$this->getDestino()."\n".
             "Cantidad de Personas: ".$this->getCantidadMaxima()."\n".
+            "Empresa: ".$this->getObjEmpresa()->getNombre()."\n".
             "Responsable: ".$this->getObjResponsable()."\n".
             "Importe: ".$this->getImporte()."$\n".
             "Semicama: ".$this->textoBoolean($this->getTipoAsiento())."\n".
@@ -136,7 +211,7 @@
         public function textoBoolean($bool){
             /* Retorna un string con un si o no */
             $txt = "NO";
-            if ($bool){
+            if ($bool==1){
                 $txt = "SI";
             }            
             return $txt;
@@ -144,7 +219,7 @@
 
         public function textoListaPasajeros(){
             /* Retorna un string con los datos de la matrice listaPasajero, en caso que no este vacio */
-            $txt = "SIN PASAJEROS\n";
+            $txt = "";
             if (count($this->getListaPasajero())>0){
                 $txt = "Pasajeros:\n";
                 foreach ($this->getListaPasajero() as $indice => $pasajero){

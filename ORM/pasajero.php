@@ -1,6 +1,5 @@
 <?php
     class pasajero{
-
         // ATRIBUTOS
         private $nombre;
         private $apellido;
@@ -68,16 +67,17 @@
 
         public function buscar($id){
             $base=new BaseDatos();
-            $consulta="Select * from pasajero where ndocumento=".$id;
+            $consulta="Select * from pasajero where rdocumento=".$id;
             $resp=false;
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     if($row2=$base->registro()){
-                        $this->cargar($row2);
+                        $this->setNombre($row2['pnombre']);
+                        $this->setApellido($row2['papellido']);
+                        $this->setNroDocumento($row2['rdocumento']);
+                        $this->setTelefono($row2['ptelefono']);
                         $objViaje=new viaje();
-                        $objViaje->buscar($row2['idviaje'], FALSE);
-                        $row2['objviaje'] = $objViaje;
-                        $this->cargar($row2);                     
+                        $this->setObjViaje($objViaje->buscar($row2['idviaje'], FALSE));                    
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -110,16 +110,19 @@
             $base=new BaseDatos();
             $resp=false;
             $consulta="INSERT INTO pasajero(rdocumento,pnombre,papellido,ptelefono,idviaje) VALUES (".$this->getNroDocumento().",'".$this->getNombre()."','".$this->getApellido()."',".$this->getTelefono().",".$this->getObjViaje()->getCodigo().")";            
-            if($base->iniciar()){    
-                $resp=true;        
-            } else { $this->setMensajeOperacion($base->getError()); }
+            if($base->Iniciar()){
+                if ($base->Ejecutar($consulta)) {    
+                    $resp=true;    
+                } else { $this->setmensajeoperacion($base->getError()); }
+    
+            } else { $this->setmensajeoperacion($base->getError()); }
             return $resp;
         }
 
         public function modificar(){
             $resp=false; 
             $base=new BaseDatos();
-            $consulta="UPDATE pasajero SET rdocumento=".$this->getNroDocumento().",pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono='".$this->getTelefono()."',idviaje=".$this->getObjViaje()->getCodigo()." WHERE rdocumento=".$this->getNroDocumento();
+            $consulta="UPDATE pasajero SET pnombre='".$this->getNombre()."',papellido='".$this->getApellido()."',ptelefono='".$this->getTelefono()."',idviaje=".$this->getObjViaje()->getCodigo()." WHERE rdocumento=".$this->getNroDocumento();
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     $resp=true;

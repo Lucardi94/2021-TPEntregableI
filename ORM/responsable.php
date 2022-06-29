@@ -1,6 +1,5 @@
 <?php
     class responsable{
-
         // ATRIBUTOS
         private $nombre;
         private $apellido;
@@ -63,7 +62,10 @@
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     if($row2=$base->registro()){
-                        $this->cargar($row2);                    
+                        $this->setNombre($row2['rnombre']);
+                        $this->setApellido($row2['rapellido']);
+                        $this->setNroEmpleado($row2['rnumeroempleado']);
+                        $this->setNroLicencia($row2['rnumerolicencia']);;                    
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -108,7 +110,7 @@
         public function modificar(){
             $resp=false; 
             $base=new BaseDatos();
-            $consulta="UPDATE responsable SET rnumeroempleado=".$this->getNroEmpleado().",rnumerolicencia=".$this->getNroLicencia().",rnombre='".$this->getNombre()."',rapellido='".$this->getApellido()."'";
+            $consulta="UPDATE responsable SET rnumerolicencia=".$this->getNroLicencia().",rnombre='".$this->getNombre()."',rapellido='".$this->getApellido()."' WHERE rnumeroempleado=".$this->getNroEmpleado();
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     $resp=true;
