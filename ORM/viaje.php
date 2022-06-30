@@ -119,22 +119,17 @@
                                 }
                             }
                         }
-                        $this->setCodigo($row2['idviaje']);
-                        $this->setDestino($row2['vdestino']);
-                        $this->setCantidadMaxima($row2['vcantmaxpasajeros']);
-
-                        $this->setListaPasajero($coleccion);
+                        $row2['listapasajero'] = $coleccion;
 
                         $objResponsable = new responsable();
                         $objResponsable->buscar($row2['rnumeroempleado']);
-                        $this->setObjResponsable($objResponsable);
+                        $row2['objresponsable'] = $objResponsable;
 
                         $objEmpresa = new empresa();
                         $objEmpresa->buscar($row2['idempresa'], FALSE);
-                        $this->setObjEmpresa($objEmpresa);
-                        $this->setImporte($row2['vimporte']);
-                        $this->setTipoAsiento($row2['tipoAsiento']);
-                        $this->setIdaVuelta($row2['idayvuelta']);
+                        $row2['objempresa'] = $objEmpresa;
+
+                        $this->cargar($row2);
                         $resp=true;
                     } else { $this->setMensajeOperacion($base->getError()); }               
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -155,7 +150,7 @@
                     $colViaje=array ();
                     while($row2=$base->registro()){
                         $objViaje=new viaje();
-                        $objViaje->buscar($row2['idviaje'],FALSE);
+                        $objViaje->buscar($row2['idviaje'],TRUE);
                         array_push($colViaje,$objViaje);
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -206,7 +201,7 @@
             "Destino: ".$this->getDestino()."\n".
             "Cantidad de Personas: ".$this->getCantidadMaxima()."\n".
             "Empresa: ".$this->getObjEmpresa()->getNombre()."\n".
-            "Responsable: ".$this->getObjResponsable()."\n".
+            $this->getObjResponsable()."\n".
             "Importe: ".$this->getImporte()."$\n".
             "Semicama: ".$this->textoBoolean($this->getTipoAsiento())."\n".
             "Ida y Vuelta: ".$this->textoBoolean($this->getIdaVuelta())."\n".

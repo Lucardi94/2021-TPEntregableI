@@ -72,15 +72,10 @@
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     if($row2=$base->registro()){
-                        $this->setNombre($row2['pnombre']);
-                        $this->setApellido($row2['papellido']);
-                        $this->setNroDocumento($row2['rdocumento']);
-                        $this->setTelefono($row2['ptelefono']);
-
                         $objViaje=new viaje();
                         $objViaje->buscar($row2['idviaje'], FALSE);
-                        $this->setObjViaje($objViaje);  
-
+                        $row2['objviaje'] = $objViaje;
+                        $this->cargar($row2);
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }

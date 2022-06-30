@@ -62,10 +62,7 @@
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     if($row2=$base->registro()){
-                        $this->setNombre($row2['rnombre']);
-                        $this->setApellido($row2['rapellido']);
-                        $this->setNroEmpleado($row2['rnumeroempleado']);
-                        $this->setNroLicencia($row2['rnumerolicencia']);;                    
+                        $this->cargar($row2);                   
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -133,8 +130,10 @@
 
         // METODO toString()
         public function __toString(){
-            return $this->getNombre()." ".$this->getApellido()."\n".
+            return "##########################\n".
+            "Responsable: ".$this->getNombre()." ".$this->getApellido()."\n".
             "N° EMPLEADO: ".$this->getNroEmpleado()."\n".
-            "N° LICENCIA: ".$this->getNroLicencia();
+            "N° LICENCIA: ".$this->getNroLicencia()."\n".
+            "##########################";
         }
     }

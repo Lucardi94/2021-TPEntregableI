@@ -71,11 +71,9 @@
                                     array_push($coleccion, $viaje);
                                 }
                             }
-                        }                      
-                        $this->setNroEmpresa($row2['idempresa']);
-                        $this->setNombre($row2['enombre']);
-                        $this->setDireccion($row2['edireccion']);
-                        $this->setListaViaje($coleccion);                    
+                        }
+                        $row2['listaviaje'] = $coleccion;                      
+                        $this->cargar($row2);                  
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -96,7 +94,7 @@
                     $colEmpresa=array ();
                     while($row2=$base->registro()){
                         $objEmpresa=new empresa();
-                        $objEmpresa->buscar($row2['idempresa'],FALSE);
+                        $objEmpresa->buscar($row2['idempresa'],TRUE);
                         array_push($colEmpresa,$objEmpresa);
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }
@@ -153,10 +151,10 @@
             /* Retorna un string con los datos de la matrice lista, en caso que no este vacio */
             $txt = "";
             if (count($this->getListaViaje())>0){
-                $txt = "\nVIAJES:";
+                $txt = "\nVIAJES:\n";
                 foreach ($this->getListaViaje() as $indice => $empresa){
                     $numero = $indice + 1;
-                    $txt.= "\n----------------------------\n".$empresa."\n"; 
+                    $txt.= "----------------------------------\n".$empresa; 
                 }
             }            
             return $txt;
