@@ -76,8 +76,11 @@
                         $this->setApellido($row2['papellido']);
                         $this->setNroDocumento($row2['rdocumento']);
                         $this->setTelefono($row2['ptelefono']);
+
                         $objViaje=new viaje();
-                        $this->setObjViaje($objViaje->buscar($row2['idviaje'], FALSE));                    
+                        $objViaje->buscar($row2['idviaje'], FALSE);
+                        $this->setObjViaje($objViaje);  
+
                         $resp=true;
                     }                
                 } else { $this->setMensajeOperacion($base->getError()); }

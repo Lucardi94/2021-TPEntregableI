@@ -30,6 +30,7 @@
     
     //LISTAR()
 	$colEmpresa =$objEmpresa->listar();
+    echo "-------------------------------------------------------\n";
 	foreach ($colEmpresa as $unaEmpresa){	
 		echo $unaEmpresa.
         "\n-------------------------------------------------------\n";

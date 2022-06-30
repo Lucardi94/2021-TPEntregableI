@@ -146,17 +146,17 @@
             return $this->getNombre()."\n".
             "N° EMPRESA: ".$this->getNroEmpresa()."\n".
             "DIRECCION: ".$this->getDireccion().
-            $this->textoListaEmpresa();
+            $this->textoListaViaje();
         }
 
-        public function textoListaEmpresa(){
+        public function textoListaViaje(){
             /* Retorna un string con los datos de la matrice lista, en caso que no este vacio */
             $txt = "";
             if (count($this->getListaViaje())>0){
-                $txt = "EMPRESA:\n";
+                $txt = "\nVIAJES:";
                 foreach ($this->getListaViaje() as $indice => $empresa){
                     $numero = $indice + 1;
-                    $txt = $txt."     ".$numero." - ".$empresa."\n"; 
+                    $txt.= "\n----------------------------\n".$empresa."\n"; 
                 }
             }            
             return $txt;

@@ -122,11 +122,16 @@
                         $this->setCodigo($row2['idviaje']);
                         $this->setDestino($row2['vdestino']);
                         $this->setCantidadMaxima($row2['vcantmaxpasajeros']);
+
                         $this->setListaPasajero($coleccion);
+
                         $objResponsable = new responsable();
-                        $this->setObjResponsable($objResponsable->buscar($row2['rnumeroempleado']));
+                        $objResponsable->buscar($row2['rnumeroempleado']);
+                        $this->setObjResponsable($objResponsable);
+
                         $objEmpresa = new empresa();
-                        $this->setObjEmpresa($objEmpresa->buscar($row2['idempresa'], FALSE));
+                        $objEmpresa->buscar($row2['idempresa'], FALSE);
+                        $this->setObjEmpresa($objEmpresa);
                         $this->setImporte($row2['vimporte']);
                         $this->setTipoAsiento($row2['tipoAsiento']);
                         $this->setIdaVuelta($row2['idayvuelta']);
@@ -174,7 +179,7 @@
         public function modificar(){
             $resp=false; 
             $base=new BaseDatos();
-            $consulta="UPDATE viaje SET vcantmaxpasajeros=".$this->getCantidadMaxima().",idempresa=".$this->getObjEmpresa()->getNroEmpresa().",rnumeroempleado=".$this->getObjResponsable()->getNroEmpleado().",vimporte=".$this->getImporte().",tipoAsiento=".$this->getTipoAsiento().", idayvuelta=".$this->getIdaVuelta()." WHERE idviaje=".$this->getCodigo();
+            $consulta="UPDATE viaje SET vdestino='".$this->getDestino()."', vcantmaxpasajeros=".$this->getCantidadMaxima().",idempresa=".$this->getObjEmpresa()->getNroEmpresa().",rnumeroempleado=".$this->getObjResponsable()->getNroEmpleado().",vimporte=".$this->getImporte().",tipoAsiento=".$this->getTipoAsiento().", idayvuelta=".$this->getIdaVuelta()." WHERE idviaje=".$this->getCodigo();
             if($base->iniciar()){
                 if($base->ejecutar($consulta)){
                     $resp=true;

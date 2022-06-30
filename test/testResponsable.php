@@ -28,6 +28,7 @@
 
     //LISTAR()
 	$colResponsable =$objResponsable->listar();
+    echo "-------------------------------------------------------\n";
 	foreach ($colResponsable as $unResponsable){	
 		echo $unResponsable.
         "\n-------------------------------------------------------\n";

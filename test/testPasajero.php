@@ -8,11 +8,11 @@
     $objViaje = new viaje();
     $objViaje->buscar(1,FALSE);
     $objViaje2 = new viaje();
-    $objViaje2->buscar(2,FALSE);
+    $objViaje2->buscar(4,FALSE);
 
     //CARGAR()
     $objPasajero=new pasajero();
-	$pasajero=array ('rdocumento'=>101,'pnombre'=>'Lucas','papellido'=>'Brandao','ptelefono'=>999,'objviaje'=>$objViaje);
+	$pasajero=array ('rdocumento'=>123123123123123,'pnombre'=>'Lucas','papellido'=>'Brandao','ptelefono'=>999,'objviaje'=>$objViaje);
     $objPasajero->cargar($pasajero);
 
     // INSERTAR()

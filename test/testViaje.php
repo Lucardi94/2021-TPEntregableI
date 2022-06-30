@@ -6,13 +6,13 @@
     include_once "../ORM/pasajero.php";
 
     $objResponsable = new responsable();
-    $objResponsable->buscar(2);
+    $objResponsable->buscar(4);
     $objResponsable2 = new responsable();
-    $objResponsable2->buscar(8);
+    $objResponsable2->buscar(7);
     $objEmpresa = new empresa();
-    $objEmpresa->buscar(124,false);
+    $objEmpresa->buscar(1,false);
     $objEmpresa2 = new empresa();
-    $objEmpresa2->buscar(126,false);
+    $objEmpresa2->buscar(4,false);
 
     //CARGAR()
     $objViaje=new viaje();
@@ -23,26 +23,27 @@
 	if ($objViaje->insertar()){
 		echo "OP INSERCION EXITOSA\n";
 	} else echo $objViaje->getmensajeoperacion();
-
+    
     // MODIFICAR()
     $objViaje->setDestino("Destino Ramdom");
     $objViaje->setCantidadMaxima(999);
     $objViaje->setListaPasajero(array ());
     $objViaje->setObjEmpresa($objEmpresa2);
-    $objViaje->setObjResponsable($objEmpresa2);
+    $objViaje->setObjResponsable($objResponsable2);
     $objViaje->setImporte(100000);
     $objViaje->setTipoAsiento(TRUE);    
     $objViaje->setIdaVuelta(TRUE);
+
 	if ($objViaje->modificar()){
         echo "OP MODIFICACION EXITOSA\n";	
 	}else echo $objViaje->getmensajeoperacion();
-
+    
     // ELIMINAR()
 	if ($objViaje->eliminar()){
 		echo "OP ELIMINACION EXITOSA\n";
 	} else echo $objViaje->getmensajeoperacion();
     
-
+    
     //LISTAR()
     $objViaje=new viaje();
 	$colViaje =$objViaje->listar();
@@ -50,9 +51,10 @@
 		echo $unViaje.
         "\n-------------------------------------------------------\n";
 	}
-
+    
     //BUSCAR()
     echo "Seleccione el id de la funcion deseada ";
     if ($objViaje->Buscar(trim(fgets(STDIN)), TRUE)){
         echo $objViaje;
     } else echo $objViaje->getMensajeOperacion();
+
