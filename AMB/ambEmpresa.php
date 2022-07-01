@@ -33,28 +33,64 @@
             return $txt;
         }
 
-        /*
-        public function modificarFuncion($id,$funcion){
-            $objFuncion=new Funcion();
-            $objFuncion->Buscar($id);   
-            $objFuncion->cargar($funcion);            
-            if ($objFuncion->modificar()){
-                return "Funcion Modificada";
-            } else return "Error: ".$objFuncion->getMensajeOperacion();
-        }
-
-        public function listarFuncion(){
-            $objFuncion=new Funcion();   
-            $colFuncion =$objFuncion->listar();
-            $txt="[FUNCIONES]".
-            "\n-------------------------------------------------------\n";
-	        foreach ($colFuncion as $unaFuncion){	
-		        $txt.= $unaFuncion.
-                "\n-------------------------------------------------------\n";
-	        }
+        public function modificarNombre($objEmpresa,$nuevoNombre){
+            $posible = true;
+            if ($objEmpresa->getNombre() == $nuevoNombre){
+                $txt = "Mismo nombre\n";
+                $posible = false;
+            }
+            $colEmpresa =$objEmpresa->listar();            
+            $i=0;
+            while ($i<count($colEmpresa) && $posible){
+                if ($colEmpresa[$i]->getNombre() == $nuevoNombre){
+                    $txt="Nombre utilizado\n";
+                    $posible = false;
+                }
+                $i++;
+            }  
+            if ($posible){
+                $objEmpresa->setNombre($nuevoNombre);            
+                if ($objEmpresa->modificar()){
+                    $txt = "Nombre modificado\n";
+                } else $txt = "Error: ".$objEmpresa->getMensajeOperacion();
+            }
             return $txt;
         }
 
+        public function modificarDireccion($objEmpresa,$nuevoDireccion){
+            $posible = true;
+            if ($objEmpresa->getDireccion() == $nuevoDireccion){
+                $txt = "Misma direccion\n";
+                $posible = false;
+            }
+            $colEmpresa =$objEmpresa->listar();            
+            $i=0;
+            while ($i<count($colEmpresa) && $posible){
+                if ($colEmpresa[$i]->getDireccion() == $nuevoDireccion){
+                    $txt="Direccion utilizado\n";
+                    $posible = false;
+                }
+                $i++;
+            }  
+            if ($posible){
+                $objEmpresa->setDireccion($nuevoDireccion);            
+                if ($objEmpresa->modificar()){
+                    $txt = "Direccion modificada\n";
+                } else $txt = "Error: ".$objEmpresa->getMensajeOperacion();
+            }
+            return $txt;
+        }
+
+        public function listarEmpresa(){
+            $objEmpresa=new empresa();
+            $colEmpresa =$objEmpresa->listar();
+            $txt="EMPRESAS";
+	        foreach ($colEmpresa as $unaEmpresa){	
+		        $txt.= "\n-------------------------------------------------------\n".$unaEmpresa;
+	        }
+            return $txt."\n";
+        }
+        /*
         public function eliminarFuncion($id){
             $objFuncion=new Funcion();
             $objFuncion->Buscar($id);   
@@ -62,19 +98,23 @@
                 return "Funcion Eliminada";
             } else return "Error: ".$objFuncion->getMensajeOperacion();
         }
+        */
 
-        public function buscarFuncion($id){
-            $objFuncion=new Funcion();   
-            if ($objFuncion->Buscar($id)){
-                return $objFuncion;
-            } else return "Error: ".$objFuncion->getMensajeOperacion();
+        public function buscarEmpresa($numeroEmpresa){
+            $objEmpresa=new empresa();   
+            $colEmpresa = $objEmpresa->listar();
+            $i=0;
+            $encontro = false;
+            while ($i<count($colEmpresa) && !$encontro){
+                if ($colEmpresa[$i]->getNroEmpresa() == $numeroEmpresa){
+                    $encontro = true;
+                } 
+                $i++;
+            }
+            if ($encontro){
+                if ($objEmpresa->buscar($numeroEmpresa, TRUE)){
+                    return $objEmpresa;
+                } else return "Error: ".$objEmpresa->getMensajeOperacion();
+            } else return "Error: nuemero de empresa no valido\n";
         }
-
-        //FUNCIONES
-        public function darCosto($id){
-            $objFuncion=new Funcion();   
-            if ($objFuncion->Buscar($id)){
-                return $objFuncion->getPrecio()*1.45;
-            } else return "Error: ".$objFuncion->getMensajeOperacion();
-        }*/
     }
