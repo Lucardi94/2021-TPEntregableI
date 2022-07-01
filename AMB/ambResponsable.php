@@ -1,6 +1,9 @@
 <?php
     include_once "../ORM/BaseDatos.php";
+    include_once "../ORM/empresa.php";
+    include_once "../ORM/viaje.php";
     include_once "../ORM/responsable.php";
+    include_once "../ORM/pasajero.php";
     class abmResponsable {        
         public function insertarResponsable($responsable){
             $objResponsable=new responsable();
@@ -89,15 +92,25 @@
             }
             return $txt."\n";
         }
-        /*
-        public function eliminarFuncion($id){
-            $objFuncion=new Funcion();
-            $objFuncion->Buscar($id);   
-            if ($objFuncion->eliminar()){
-                return "Funcion Eliminada";
-            } else return "Error: ".$objFuncion->getMensajeOperacion();
+        
+        public function eliminarResponsable($objResponsable){
+            $esta=false;
+            $objViaje=new viaje();
+            $colViaje = $objViaje->listar();
+            $i=0;
+            while ($i<count($colViaje) && !$esta){
+                if ($colViaje[$i]->getObjResponsable() == $objResponsable){
+                    $esta = true;
+                }
+                $i++;
+            }
+            if (!$esta){
+                if ($objResponsable->eliminar() && !$esta){
+                    return "Responsable eliminado\n";
+                } else return "Error: ".$objResponsable->getMensajeOperacion();
+            } else return "Responsable asignado a un o mas viajes\n";
         }
-        */
+
         public function buscarResponsable($numeroEmpleado){
             $objResponsable=new responsable();               
             $colResponsable =$objResponsable->listar();

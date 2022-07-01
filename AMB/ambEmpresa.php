@@ -90,15 +90,29 @@
 	        }
             return $txt."\n";
         }
-        /*
-        public function eliminarFuncion($id){
-            $objFuncion=new Funcion();
-            $objFuncion->Buscar($id);   
-            if ($objFuncion->eliminar()){
-                return "Funcion Eliminada";
-            } else return "Error: ".$objFuncion->getMensajeOperacion();
+        
+
+        public function eliminarEmpresa($objEmpresa){
+            $pudo=true;
+            if (count($objEmpresa->getListaViaje())>0){
+                foreach ($objEmpresa->getListaViaje() as $viaje){
+                    if (count($viaje->getListaPasajero())){
+                        foreach ($viaje->getListaPasajero() as $pasajero){
+                            if (!$pasajero->eliminar()){
+                                $pudo = false;
+                            }
+                        }
+                    }
+                    if (!$viaje->eliminar()){
+                        $pudo = false;
+                    }
+                }
+            }
+            if ($objEmpresa->eliminar() && $pudo){
+                return "Empresa Eliminada\n";
+            } else return "Error: ".$objEmpresa->getMensajeOperacion();
         }
-        */
+        
 
         public function buscarEmpresa($numeroEmpresa){
             $objEmpresa=new empresa();   
