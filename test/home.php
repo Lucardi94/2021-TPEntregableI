@@ -321,7 +321,7 @@
      $ambViaje = new abmViaje();
      $ambPasajero = new abmPasajero();
 
-     echo "Bienvenido a la Terminal Locion Tamal\n";
+     echo "Bienvenido a la app Estacion Gran Central\n";
      do {
         $resp0 = menu0();
         switch ($resp0){
